@@ -8,6 +8,8 @@ LRUCache::LRUCache()
   : CL_MASK(CacheLineSize-1)
   , CL_SHIFT(log(CACHELINE_SZ)/log(2))
   , m_lastUsedLoc(CacheSize/CacheLineSize - 1)
+  , m_addressToCacheLoc(CacheSize/CacheLineSize)
+  , m_cacheLocToAddress(CacheSize/CacheLineSize)
 {
   initLocationStack();
 }
@@ -23,7 +25,7 @@ inline void LRUCache::initLocationStack()
 template <unsigned CacheSize, unsigned CacheLineSize, unsigned verbose>
 inline void LRUCache::writeMessage(const char* message) const
 {
-  if (constexpr(verbose))
+  if constexpr(verbose)
   {
     std::cout << message << std::endl;
   }
@@ -39,7 +41,6 @@ inline void LRUCache::iterCache(Func&& f)
     f(i);
   }
 }
-
 
 // Flush the contents of the cache - evicts all data to RAM and resets state
 template <unsigned cachesize, unsigned cachelinesize, unsigned verbose>
