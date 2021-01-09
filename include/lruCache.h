@@ -21,7 +21,7 @@ private:
   // Translate between cache locations and memory addresses
   std::unordered_map<int,int> m_cacheLocToAddress;
   // Keep track of the next free locations in a stack
-  std::stack<uint32_t> m_nextFreeLocations;
+  std::stack<uint32_t> m_locationStack;
 
   void initLocationStack();
   void writeMessage(const char* message) const;
@@ -34,16 +34,15 @@ private:
   int32_t fetchCacheEntry(uint32_t address);
   uint32_t getNextFreeLocation();
   void writeToMemOnEvict(int ram[], uint32_t loc);
-  bool addressInCacheLine(uint32_t address);
-  uint32_t cacheLineAddress(uint32_t address);
-  uint32_t cacheEntryPosition(uint32_t address);
-  uint32_t cacheLineStartMemAddress(uint32_t address);
+  bool addressInCacheLine(uint32_t address) const;
+  uint32_t cacheLineAddress(uint32_t address) const;
+  uint32_t cacheEntryPosition(uint32_t address) const;
+  uint32_t cacheLineStartMemAddress(uint32_t address) const;
 public:
 
   LRUCache();
   virtual void flush(int ram[]) override;
-  virtual int read(int address, int[] ram) override;
+  virtual int read(int address, int ram[]) override;
   virtual void write(int address, int data, int ram[]) override;
-
 
 };

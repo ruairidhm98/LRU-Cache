@@ -1,8 +1,6 @@
 // Interface for a cache
 #pragma once
 
-#include "status.h"
-
 class Cache
 {
 public:
